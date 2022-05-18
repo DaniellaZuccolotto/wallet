@@ -1,16 +1,52 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { actionFetchApi } from '../actions/index';
+import { actionFetchApi, actionSaveForm } from '../actions/index';
 
 class Wallet extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      id: 0,
+      value: 0,
+      description: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
+      exchangeRates: {},
+    };
+  }
+
   componentDidMount() {
     const { getApi } = this.props;
     getApi();
   }
 
+  handleChange = ({ target }) => {
+    const { name, value } = target;
+    this.setState({
+      [name]: value,
+    });
+  }
+
+  onClick = () => {
+    const { saveForm } = this.props;
+    const { id } = this.state;
+    this.setState({}, async () => {
+      const recive = await fetch('https://economia.awesomeapi.com.br/json/all');
+      const data = await recive.json();
+      this.setState({
+        exchangeRates: data }, () => {
+        saveForm(this.state);
+        this.setState({ id: id + 1, value: '' });
+      });
+    });
+  }
+
   render() {
     const { email, currencies } = this.props;
+    const { value } = this.state;
     return (
       <main>
         <header>
@@ -25,28 +61,28 @@ class Wallet extends React.Component {
             <input
               onChange={ this.handleChange }
               type="number"
-              name="valorGasto"
+              name="value"
               data-testid="value-input"
               id="input-value"
-              // value={ valorGasto }
+              value={ value }
             />
           </label>
           <label htmlFor="input-description">
             Descrição:
             <input
               onChange={ this.handleChange }
-              type="number"
-              name="descricao"
+              type="text"
+              name="description"
               data-testid="description-input"
               id="input-description"
-              // value={ descricao }
+              // value={ description }
             />
           </label>
           <label htmlFor="input-currencies">
-            Moeda
+            Moedas
             <select
-              type="number"
-              name="descricao"
+              onChange={ this.handleChange }
+              name="currency"
               id="input-currencies"
               // value={ descricao }
             >
@@ -63,33 +99,39 @@ class Wallet extends React.Component {
           <label htmlFor="input-method">
             Forma de Pagamento:
             <select
-              type="number"
-              name="pagamento"
+              onChange={ this.handleChange }
+              name="method"
               data-testid="method-input"
               id="input-method"
               // value={ descricao }
             >
-              <option>Dinheiro</option>
-              <option>Cartão de crédito</option>
-              <option>Cartão de débito</option>
+              <option value="Dinheiro">Dinheiro</option>
+              <option value="Cartão de crédito">Cartão de crédito</option>
+              <option value="Cartão de débito">Cartão de débito</option>
             </select>
           </label>
           <label htmlFor="input-tag">
             Categoria da Despesa:
             <select
-              type="number"
-              name="pagamento"
+              onChange={ this.handleChange }
+              name="tag"
               data-testid="tag-input"
               id="input-tag"
               // value={ descricao }
             >
-              <option>Alimentação</option>
-              <option>Lazer</option>
-              <option>Trabalho</option>
-              <option>Transporte</option>
-              <option>Saúde</option>
+              <option value="Alimentação">Alimentação</option>
+              <option value="Lazer">Lazer</option>
+              <option value="Trabalho">Trabalho</option>
+              <option value="Transporte">Transporte</option>
+              <option value="Saúde">Saúde</option>
             </select>
           </label>
+          <button
+            type="button"
+            onClick={ this.onClick }
+          >
+            Adicionar despesa
+          </button>
         </form>
       </main>
 
@@ -104,11 +146,13 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   getApi: () => dispatch(actionFetchApi()),
+  saveForm: (state) => dispatch(actionSaveForm(state)),
 });
 
 Wallet.propTypes = {
   email: PropTypes.string.isRequired,
   getApi: PropTypes.func.isRequired,
+  saveForm: PropTypes.func.isRequired,
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
