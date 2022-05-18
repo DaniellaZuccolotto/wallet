@@ -11,7 +11,10 @@ const walletReducer = (state = INITIAL_STATE, action) => {
   case GET_API:
     return { ...state, currencies: action.resultAPI };
   case ERROR:
-    return 'Deu erro na API';
+    return {
+      ...state,
+      error: 'Deu erro na API',
+    };
   default:
     return state;
   }
