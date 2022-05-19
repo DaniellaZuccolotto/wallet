@@ -4,6 +4,7 @@ export const GET_API = 'GET_API';
 export const ERROR = 'ERROR';
 export const SAVE_FORM = 'SAVE_FORM';
 export const REMOVE_EXPENSE = 'REMOVE_EXPENSE';
+export const EDIT_EXPENSE = 'EDIT_EXPENSE';
 // export const GET_APICOMPLET = 'GET_APICOMPLET';
 
 const getAPI = (resultAPI) => ({ type: GET_API, resultAPI });
@@ -23,6 +24,11 @@ export const actionSaveForm = (expenses) => ({
 export const actionRemoveExpense = (expenses) => ({
   type: REMOVE_EXPENSE,
   expenses,
+});
+
+export const actionEditExpense = (expensesEdit) => ({
+  type: EDIT_EXPENSE,
+  expensesEdit,
 });
 
 export const actionFetchApi = () => async (dispatch) => {

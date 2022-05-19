@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { actionFetchApi, actionSaveForm } from '../actions/index';
+import { actionFetchApi, actionSaveForm, actionEditExpense } from '../actions/index';
 import Despesa from '../components/Despesa';
 
 class Wallet extends React.Component {
@@ -16,6 +16,9 @@ class Wallet extends React.Component {
       method: 'Dinheiro',
       tag: 'Alimentação',
       exchangeRates: {},
+      btnEdit: false,
+      idEdit: 0,
+      exchangeRatesEdit: {},
     };
   }
 
@@ -33,26 +36,67 @@ class Wallet extends React.Component {
 
   onClick = () => {
     const { saveForm } = this.props;
-    const { id } = this.state;
     this.setState({}, async () => {
       const recive = await fetch('https://economia.awesomeapi.com.br/json/all');
       const data = await recive.json();
       this.setState({
         exchangeRates: data }, () => {
-        saveForm(this.state);
+        const { id, value, description, currency,
+          method, tag, exchangeRates } = this.state;
+        const newObjState = {
+          id,
+          value,
+          description,
+          currency,
+          method,
+          tag,
+          exchangeRates,
+        };
+        saveForm(newObjState);
         this.setState({ id: id + 1, value: '' });
       });
     });
   }
 
+  onClickEdit = (idEd, exchangeRatesEdit) => {
+    const { btnEdit } = this.state;
+    if (!btnEdit) {
+      this.setState({ btnEdit: true, idEdit: idEd, exchangeRatesEdit });
+    } else {
+      this.setState({ btnEdit: false, idEdit: idEd, exchangeRatesEdit });
+    }
+  }
+
+  onClickEditForm = () => {
+    const { expenses, editForm } = this.props;
+    const { idEdit, value, description, currency,
+      method, tag, exchangeRatesEdit } = this.state;
+    // const filterExpenseExchange = expenses.filter((expense) => expense.id === idEdit);
+    console.log(currency);
+    const newObjState = {
+      id: idEdit,
+      value,
+      description,
+      currency,
+      method,
+      tag,
+      exchangeRates: exchangeRatesEdit,
+    };
+    const filterExpenseMap = expenses.map((expense) => {
+      if (expense.id === idEdit) {
+        return newObjState;
+      } return expense;
+    });
+    editForm(filterExpenseMap);
+  }
+
   render() {
     const { email, currencies, expenses } = this.props;
-    const { value } = this.state;
+    const { value, btnEdit } = this.state;
     const getDespesas = expenses.reduce((acc, despesa) => {
       const { value: valor, currency, exchangeRates } = despesa;
-      const moedas = Object.values(exchangeRates);
-      const moedaFilter = moedas.filter((moeda) => moeda.code === currency);
-      acc += valor * moedaFilter[0].ask;
+      const moedaFilter = exchangeRates[currency].ask;
+      acc += Number(valor) * Number(moedaFilter);
       return acc;
     }, 0);
     return (
@@ -90,6 +134,7 @@ class Wallet extends React.Component {
             Moedas
             <select
               onChange={ this.handleChange }
+              data-testid="currency-input"
               name="currency"
               id="input-currencies"
               // value={ descricao }
@@ -134,26 +179,39 @@ class Wallet extends React.Component {
               <option value="Saúde">Saúde</option>
             </select>
           </label>
-          <button
-            type="button"
-            onClick={ this.onClick }
-          >
-            Adicionar despesa
-          </button>
+          {
+            btnEdit ? (
+              <button
+                type="button"
+                onClick={ this.onClickEditForm }
+              >
+                Editar despesa
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={ this.onClick }
+              >
+                Adicionar despesa
+              </button>
+            )
+          }
         </form>
         <table>
-          <th>Descrição</th>
-          <th>Tag</th>
-          <th>Método de pagamento</th>
-          <th>Valor</th>
-          <th>Moeda</th>
-          <th>Câmbio utilizado</th>
-          <th>Valor convertido</th>
-          <th>Moeda de conversão</th>
-          <th>Editar/Excluir</th>
+          <tbody>
+            <th>Descrição</th>
+            <th>Tag</th>
+            <th>Método de pagamento</th>
+            <th>Valor</th>
+            <th>Moeda</th>
+            <th>Câmbio utilizado</th>
+            <th>Valor convertido</th>
+            <th>Moeda de conversão</th>
+            <th>Editar/Excluir</th>
+          </tbody>
         </table>
         <div>
-          <Despesa />
+          <Despesa onClickEdit={ this.onClickEdit } />
         </div>
       </main>
     );
@@ -169,6 +227,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getApi: () => dispatch(actionFetchApi()),
   saveForm: (state) => dispatch(actionSaveForm(state)),
+  editForm: (newArray) => dispatch(actionEditExpense(newArray)),
 });
 
 Wallet.propTypes = {
@@ -177,6 +236,7 @@ Wallet.propTypes = {
   saveForm: PropTypes.func.isRequired,
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
   expenses: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  editForm: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

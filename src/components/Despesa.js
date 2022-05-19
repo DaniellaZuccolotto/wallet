@@ -6,6 +6,7 @@ import { actionRemoveExpense } from '../actions/index';
 class Despesa extends React.Component {
   getAsk = (despesa) => {
     const { value, currency, exchangeRates } = despesa;
+    // console.log(exchangeRates);
     const moedas = Object.values(exchangeRates);
     const moedaFilter = moedas.filter((moeda) => moeda.code === currency);
     const ask = Number(moedaFilter[0].ask);
@@ -27,35 +28,39 @@ class Despesa extends React.Component {
   }
 
   render() {
-    const { expenses } = this.props;
+    const { expenses, onClickEdit } = this.props;
     // console.log(expenses);
     return (
       <table>
-        {expenses.map((despesa, index) => (
-          <tr key={ index }>
-            <td>{despesa.description}</td>
-            <td>{despesa.tag}</td>
-            <td>{despesa.method}</td>
-            <td>{Number(despesa.value).toFixed(2)}</td>
-            <td>{ this.getAsk(despesa).moedaConversao }</td>
-            <td>{ (this.getAsk(despesa).ask).toFixed(2) }</td>
-            <td>{ this.getAsk(despesa).valueTotalFixed }</td>
-            <td>Real</td>
-            <td>
-              <button
-                type="button"
-              >
-                Editar
-              </button>
-              <button
-                type="button"
-                data-testid="delete-btn"
-                onClick={ () => this.onClick(despesa.id) }
-              >
-                Excluir
-              </button>
-            </td>
-          </tr>))}
+        <tbody>
+          {expenses.map((despesa, index) => (
+            <tr key={ index }>
+              <td>{despesa.description}</td>
+              <td>{despesa.tag}</td>
+              <td>{despesa.method}</td>
+              <td>{Number(despesa.value).toFixed(2)}</td>
+              <td>{ this.getAsk(despesa).moedaConversao }</td>
+              <td>{ (this.getAsk(despesa).ask).toFixed(2) }</td>
+              <td>{ this.getAsk(despesa).valueTotalFixed }</td>
+              <td>Real</td>
+              <td>
+                <button
+                  type="button"
+                  data-testid="edit-btn"
+                  onClick={ () => onClickEdit(despesa.id, despesa.exchangeRates) }
+                >
+                  Editar
+                </button>
+                <button
+                  type="button"
+                  data-testid="delete-btn"
+                  onClick={ () => this.onClick(despesa.id) }
+                >
+                  Excluir
+                </button>
+              </td>
+            </tr>))}
+        </tbody>
       </table>
     );
   }
@@ -64,6 +69,7 @@ class Despesa extends React.Component {
 Despesa.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   removeExpense: PropTypes.func.isRequired,
+  onClickEdit: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
