@@ -45,14 +45,21 @@ class Wallet extends React.Component {
   }
 
   render() {
-    const { email, currencies } = this.props;
+    const { email, currencies, expenses } = this.props;
     const { value } = this.state;
+    const getDespesas = expenses.reduce((acc, despesa) => {
+      const { value: valor, currency, exchangeRates } = despesa;
+      const moedas = Object.values(exchangeRates);
+      const moedaFilter = moedas.filter((moeda) => moeda.code === currency);
+      acc += valor * moedaFilter[0].ask;
+      return acc;
+    }, 0);
     return (
       <main>
         <header>
           <h2>TrybeWallet</h2>
           <p data-testid="email-field">{`Email:${email}`}</p>
-          <p data-testid="total-field">Despesa total: 0</p>
+          <p data-testid="total-field">{getDespesas.toFixed(2)}</p>
           <p data-testid="header-currency-field">BRL</p>
         </header>
         <form>
@@ -142,6 +149,7 @@ class Wallet extends React.Component {
 const mapStateToProps = (state) => ({
   email: state.user.email,
   currencies: state.wallet.currencies,
+  expenses: state.wallet.expenses,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -154,6 +162,7 @@ Wallet.propTypes = {
   getApi: PropTypes.func.isRequired,
   saveForm: PropTypes.func.isRequired,
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
