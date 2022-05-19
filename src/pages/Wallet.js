@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { actionFetchApi, actionSaveForm } from '../actions/index';
+import Despesa from '../components/Despesa';
 
 class Wallet extends React.Component {
   constructor() {
@@ -140,19 +141,23 @@ class Wallet extends React.Component {
             Adicionar despesa
           </button>
         </form>
-        <tr>
-          <th>Descrição</th>
-          <th>Tag</th>
-          <th>Método de pagamento</th>
-          <th>Valor</th>
-          <th>Moeda</th>
-          <th>Câmbio utilizado</th>
-          <th>Valor convertido</th>
-          <th>Moeda de conversão</th>
-          <th>Editar/Excluir</th>
-        </tr>
+        <table>
+          <tr>
+            <th>Descrição</th>
+            <th>Tag</th>
+            <th>Método de pagamento</th>
+            <th>Valor</th>
+            <th>Moeda</th>
+            <th>Câmbio utilizado</th>
+            <th>Valor convertido</th>
+            <th>Moeda de conversão</th>
+            <th>Editar/Excluir</th>
+          </tr>
+        </table>
+        <div>
+          <Despesa />
+        </div>
       </main>
-
     );
   }
 }
@@ -173,7 +178,14 @@ Wallet.propTypes = {
   getApi: PropTypes.func.isRequired,
   saveForm: PropTypes.func.isRequired,
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
-  expenses: PropTypes.arrayOf(PropTypes.string).isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.shape({
+    value: PropTypes.number,
+    currencies: PropTypes.number,
+    exchangeRates: PropTypes.shape({
+      ask: PropTypes.number,
+      code: PropTypes.string,
+    }),
+  })).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
