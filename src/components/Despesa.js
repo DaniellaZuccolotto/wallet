@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { actionRemoveExpense } from '../actions/index';
 
 class Despesa extends React.Component {
   getAsk = (despesa) => {
@@ -18,9 +19,16 @@ class Despesa extends React.Component {
     };
   }
 
+  onClick = (id) => {
+    const { expenses, removeExpense } = this.props;
+    const filterExpense = expenses.filter((expense) => expense.id !== id);
+    removeExpense(filterExpense);
+    // console.log(filterExpense);
+  }
+
   render() {
     const { expenses } = this.props;
-    console.log(expenses);
+    // console.log(expenses);
     return (
       <table>
         {expenses.map((despesa, index) => (
@@ -33,7 +41,20 @@ class Despesa extends React.Component {
             <td>{ (this.getAsk(despesa).ask).toFixed(2) }</td>
             <td>{ this.getAsk(despesa).valueTotalFixed }</td>
             <td>Real</td>
-            <td>{}</td>
+            <td>
+              <button
+                type="button"
+              >
+                Editar
+              </button>
+              <button
+                type="button"
+                data-testid="delete-btn"
+                onClick={ () => this.onClick(despesa.id) }
+              >
+                Excluir
+              </button>
+            </td>
           </tr>))}
       </table>
     );
@@ -41,11 +62,16 @@ class Despesa extends React.Component {
 }
 
 Despesa.propTypes = {
-  expenses: PropTypes.arrayOf(PropTypes.string).isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  removeExpense: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
-export default connect(mapStateToProps)(Despesa);
+const mapDispatchToProps = (dispatch) => ({
+  removeExpense: (filter) => dispatch(actionRemoveExpense(filter)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Despesa);

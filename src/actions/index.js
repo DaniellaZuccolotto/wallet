@@ -3,7 +3,8 @@ export const SAVE_USER = 'SAVE_USER';
 export const GET_API = 'GET_API';
 export const ERROR = 'ERROR';
 export const SAVE_FORM = 'SAVE_FORM';
-export const GET_APICOMPLET = 'GET_APICOMPLET';
+export const REMOVE_EXPENSE = 'REMOVE_EXPENSE';
+// export const GET_APICOMPLET = 'GET_APICOMPLET';
 
 const getAPI = (resultAPI) => ({ type: GET_API, resultAPI });
 // const getAPIComplet = (resultAPIComplet) => ({ type: GET_APICOMPLET, resultAPIComplet });
@@ -16,6 +17,11 @@ export const actionSaveUser = (user) => ({
 
 export const actionSaveForm = (expenses) => ({
   type: SAVE_FORM,
+  expenses,
+});
+
+export const actionRemoveExpense = (expenses) => ({
+  type: REMOVE_EXPENSE,
   expenses,
 });
 

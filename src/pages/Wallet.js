@@ -142,17 +142,15 @@ class Wallet extends React.Component {
           </button>
         </form>
         <table>
-          <tr>
-            <th>Descrição</th>
-            <th>Tag</th>
-            <th>Método de pagamento</th>
-            <th>Valor</th>
-            <th>Moeda</th>
-            <th>Câmbio utilizado</th>
-            <th>Valor convertido</th>
-            <th>Moeda de conversão</th>
-            <th>Editar/Excluir</th>
-          </tr>
+          <th>Descrição</th>
+          <th>Tag</th>
+          <th>Método de pagamento</th>
+          <th>Valor</th>
+          <th>Moeda</th>
+          <th>Câmbio utilizado</th>
+          <th>Valor convertido</th>
+          <th>Moeda de conversão</th>
+          <th>Editar/Excluir</th>
         </table>
         <div>
           <Despesa />
@@ -178,14 +176,7 @@ Wallet.propTypes = {
   getApi: PropTypes.func.isRequired,
   saveForm: PropTypes.func.isRequired,
   currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
-  expenses: PropTypes.arrayOf(PropTypes.shape({
-    value: PropTypes.number,
-    currencies: PropTypes.number,
-    exchangeRates: PropTypes.shape({
-      ask: PropTypes.number,
-      code: PropTypes.string,
-    }),
-  })).isRequired,
+  expenses: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
