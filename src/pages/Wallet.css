@@ -1,0 +1,147 @@
+.content-wallet{
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+.content-header{
+  background-color: #ffc6c7;
+  display: flex;
+  justify-content: space-between;  
+  align-items: center;
+  border: 3px solid #ff8ba7;
+  width: 100vw;
+}
+.content-email{
+  display: flex;
+  width: 430px;
+  align-content: center;  
+}
+.head{
+  width: 100px;
+  margin-top: 12px;
+  color: #33272a;
+}
+.content-title-wallet{
+  width: 180px;
+  color: #33272a;
+  margin-left: 10px;
+  margin-top: 5px;
+}
+.head-email{
+  width: 150px;
+  margin-right: 150px;
+  margin-top: 12px;
+  color: #33272a;
+}
+form{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  text-align: center;
+  align-items: center;
+  width: 90vw;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.button-wallet{
+  border-radius: 10px;
+  height: 50px;
+  width: 150px;
+  border: 3px solid white;
+  background-color: #ff8ba7;
+  color: #33272a;
+  border-radius: 10px;
+  padding: 0;
+}
+.table-wallet{
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-content: center;
+  height: 50px; 
+} 
+.tbody-wallet{
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: space-between;
+  margin-right: 10px; 
+  text-align: center;
+  height: 50px;
+}
+th{
+  color: #33272a;
+} 
+.description{
+  width: 100px;
+  border: 1px solid #33272a;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+.tag{
+  border: 1px solid #33272a;
+  width: 120px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.method{
+  border: 1px solid #33272a;
+  width: 180px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.value{
+  border: 1px solid #33272a;
+  width: 100px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.coin{
+  border: 1px solid #33272a;
+  width: 130px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cambio{
+  border: 1px solid #33272a;
+  width: 150px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.value-conversion{
+  border: 1px solid #33272a;
+  width: 150px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.coin-conversion{
+  border: 1px solid #33272a;
+  width: 170px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.edit{
+  border: 1px solid #33272a;
+  width: 130px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

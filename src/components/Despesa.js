@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { actionRemoveExpense } from '../actions/index';
+import './Despesa.css';
 
 class Despesa extends React.Component {
   getAsk = (despesa) => {
@@ -31,20 +32,29 @@ class Despesa extends React.Component {
     const { expenses, onClickEdit } = this.props;
     // console.log(expenses);
     return (
-      <table>
-        <tbody>
+      <table className="table-expense">
+        <tbody className="tbody-expense">
           {expenses.map((despesa, index) => (
-            <tr key={ index }>
-              <td>{despesa.description}</td>
-              <td>{despesa.tag}</td>
-              <td>{despesa.method}</td>
-              <td>{Number(despesa.value).toFixed(2)}</td>
-              <td>{ this.getAsk(despesa).moedaConversao }</td>
-              <td>{ (this.getAsk(despesa).ask).toFixed(2) }</td>
-              <td>{ this.getAsk(despesa).valueTotalFixed }</td>
-              <td>Real</td>
+            <tr key={ index } className="tr-expense">
+              <td className="description-expense">{despesa.description}</td>
+              <td className="tag-expense">{despesa.tag}</td>
+              <td className="method-expense">{despesa.method}</td>
+              <td className="value-expense">{Number(despesa.value).toFixed(2)}</td>
+              <td className="coin-expense">{ this.getAsk(despesa).moedaConversao }</td>
+              <td
+                className="cambio-expense"
+              >
+                { (this.getAsk(despesa).ask).toFixed(2) }
+              </td>
+              <td
+                className="value-conversion-expense"
+              >
+                { this.getAsk(despesa).valueTotalFixed }
+              </td>
+              <td className="coin-conversion-expense">Real</td>
               <td>
                 <button
+                  className="button-expense"
                   type="button"
                   data-testid="edit-btn"
                   onClick={ () => onClickEdit(despesa.id, despesa.exchangeRates) }
@@ -52,6 +62,7 @@ class Despesa extends React.Component {
                   Editar
                 </button>
                 <button
+                  className="button-expense"
                   type="button"
                   data-testid="delete-btn"
                   onClick={ () => this.onClick(despesa.id) }

@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { actionFetchApi, actionSaveForm, actionEditExpense } from '../actions/index';
 import Despesa from '../components/Despesa';
+import './Wallet.css';
 
 class Wallet extends React.Component {
   constructor() {
     super();
-
     this.state = {
       id: 0,
       value: 0,
@@ -53,7 +53,7 @@ class Wallet extends React.Component {
           exchangeRates,
         };
         saveForm(newObjState);
-        this.setState({ id: id + 1, value: '' });
+        this.setState({ id: id + 1, value: '', description: '' });
       });
     });
   }
@@ -71,8 +71,6 @@ class Wallet extends React.Component {
     const { expenses, editForm } = this.props;
     const { idEdit, value, description, currency,
       method, tag, exchangeRatesEdit } = this.state;
-    // const filterExpenseExchange = expenses.filter((expense) => expense.id === idEdit);
-    console.log(currency);
     const newObjState = {
       id: idEdit,
       value,
@@ -88,11 +86,12 @@ class Wallet extends React.Component {
       } return expense;
     });
     editForm(filterExpenseMap);
+    this.setState({ value: '', description: '', btnEdit: false });
   }
 
   render() {
     const { email, currencies, expenses } = this.props;
-    const { value, btnEdit } = this.state;
+    const { value, btnEdit, description } = this.state;
     const getDespesas = expenses.reduce((acc, despesa) => {
       const { value: valor, currency, exchangeRates } = despesa;
       const moedaFilter = exchangeRates[currency].ask;
@@ -100,17 +99,20 @@ class Wallet extends React.Component {
       return acc;
     }, 0);
     return (
-      <main>
-        <header>
-          <h2>TrybeWallet</h2>
-          <p data-testid="email-field">{`Email:${email}`}</p>
-          <p data-testid="total-field">{getDespesas.toFixed(2)}</p>
-          <p data-testid="header-currency-field">BRL</p>
+      <main className="content-wallet">
+        <header className="content-header">
+          <h2 className="content-title-wallet">TrybeWallet</h2>
+          <div className="content-email">
+            <p className="head-email" data-testid="email-field">{`Email:${email}`}</p>
+            <p className="head" data-testid="total-field">{getDespesas.toFixed(2)}</p>
+            <p className="head" data-testid="header-currency-field">BRL</p>
+          </div>
         </header>
         <form>
           <label htmlFor="input-value">
             Valor:
             <input
+              className="form-control"
               onChange={ this.handleChange }
               type="number"
               name="value"
@@ -122,22 +124,23 @@ class Wallet extends React.Component {
           <label htmlFor="input-description">
             Descrição:
             <input
+              className="form-control"
               onChange={ this.handleChange }
               type="text"
               name="description"
               data-testid="description-input"
               id="input-description"
-              // value={ description }
+              value={ description }
             />
           </label>
           <label htmlFor="input-currencies">
             Moedas
             <select
+              className="form-control"
               onChange={ this.handleChange }
               data-testid="currency-input"
               name="currency"
               id="input-currencies"
-              // value={ descricao }
             >
               { currencies.map((moedas) => (
                 <option
@@ -152,6 +155,7 @@ class Wallet extends React.Component {
           <label htmlFor="input-method">
             Forma de Pagamento:
             <select
+              className="form-control"
               onChange={ this.handleChange }
               name="method"
               data-testid="method-input"
@@ -166,6 +170,7 @@ class Wallet extends React.Component {
           <label htmlFor="input-tag">
             Categoria da Despesa:
             <select
+              className="form-control"
               onChange={ this.handleChange }
               name="tag"
               data-testid="tag-input"
@@ -182,6 +187,7 @@ class Wallet extends React.Component {
           {
             btnEdit ? (
               <button
+                className="button-wallet"
                 type="button"
                 onClick={ this.onClickEditForm }
               >
@@ -189,6 +195,7 @@ class Wallet extends React.Component {
               </button>
             ) : (
               <button
+                className="button-wallet"
                 type="button"
                 onClick={ this.onClick }
               >
@@ -197,20 +204,20 @@ class Wallet extends React.Component {
             )
           }
         </form>
-        <table>
-          <tbody>
-            <th>Descrição</th>
-            <th>Tag</th>
-            <th>Método de pagamento</th>
-            <th>Valor</th>
-            <th>Moeda</th>
-            <th>Câmbio utilizado</th>
-            <th>Valor convertido</th>
-            <th>Moeda de conversão</th>
-            <th>Editar/Excluir</th>
+        <table className="table-wallet">
+          <tbody className="tbody-wallet">
+            <th className="description">Descrição</th>
+            <th className="tag">Tag</th>
+            <th className="method">Método de pagamento</th>
+            <th className="value">Valor</th>
+            <th className="coin">Moeda</th>
+            <th className="cambio">Câmbio utilizado</th>
+            <th className="value-conversion">Valor convertido</th>
+            <th className="coin-conversion">Moeda de conversão</th>
+            <th className="edit">Editar/Excluir</th>
           </tbody>
         </table>
-        <div>
+        <div className="div-expense">
           <Despesa onClickEdit={ this.onClickEdit } />
         </div>
       </main>

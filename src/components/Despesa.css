@@ -1,0 +1,45 @@
+.tr-expense{
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: space-between;
+  text-align: center;
+}
+.button-expense{
+  border-radius: 10px;
+  height: 30px;
+  width: 65px;
+  border: 3px solid white;
+  background-color: #ff8ba7;
+  color: #33272a;
+  border-radius: 10px;
+  padding: 0;
+}
+.description-expense{
+  width: 100px;
+}
+.tag-expense{
+  width: 120px;
+}
+.method-expense{
+  width: 180px;
+}
+.value-expense{
+  width: 100px;
+}
+.coin-expense{
+  width: 130px;
+}
+.cambio-expense{
+  width: 150px;
+}
+.value-conversion-expense{
+  width: 150px;
+}
+.coin-conversion-expense{
+  width: 170px;
+}
+.edit-expense{
+  width: 130px;
+}

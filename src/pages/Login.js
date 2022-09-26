@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { actionSaveUser } from '../actions/index';
+import './Login.css';
 
 class Login extends React.Component {
   constructor() {
@@ -51,39 +52,43 @@ class Login extends React.Component {
   render() {
     const { email, password, disabled } = this.state;
     return (
-      <div>
-        <h2>Faça seu Login</h2>
-        <label htmlFor="input-email">
-          Email:
-          <input
-            onChange={ this.handleChange }
-            type="email"
-            name="email"
-            data-testid="email-input"
-            id="input-email"
-            value={ email }
-          />
-        </label>
-        <label htmlFor="input-password">
-          Senha:
-          <input
-            onChange={ this.handleChange }
-            type="password"
-            name="password"
-            data-testid="password-input"
-            id="input-password"
-            value={ password }
-          />
-        </label>
-        <button
-          type="button"
-          name="disabled"
-          disabled={ disabled }
-          onClick={ this.onClick }
-        >
-          Entrar
-        </button>
-      </div>
+      <main className="content">
+        <div className="content-login">
+          <h2 className="title-content ">Trybe Wallet</h2>
+          <label htmlFor="input-email">
+            Email:
+            <input
+              className="form-control shadow p-3"
+              onChange={ this.handleChange }
+              type="email"
+              name="email"
+              data-testid="email-input"
+              id="input-email"
+              value={ email }
+            />
+          </label>
+          <label htmlFor="input-password">
+            Senha:
+            <input
+              className="form-control shadow p-3"
+              onChange={ this.handleChange }
+              type="password"
+              name="password"
+              data-testid="password-input"
+              id="input-password"
+              value={ password }
+            />
+          </label>
+          <button
+            type="button"
+            name="disabled"
+            disabled={ disabled }
+            onClick={ this.onClick }
+          >
+            Entrar
+          </button>
+        </div>
+      </main>
     );
   }
 }
